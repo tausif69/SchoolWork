@@ -1,0 +1,22 @@
+def search(self, key):
+    pos - self.h1(key)
+    
+    if self.table[pos] == key:
+        return pos
+        
+        
+    else: 
+        i =1 
+        
+        
+        while i <= self.size:
+            
+            new_slot = (self.h1(key)+ i * self.h2(key)) % self.size
+            
+            
+            if self.table[new_slot] == key: 
+                return new_slot
+                
+            else: 
+                i +=1 
+    return False
