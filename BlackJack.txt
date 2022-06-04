@@ -1,0 +1,108 @@
+import random
+
+class Card:
+    def __init__(self, suit, value):
+        self.suit = suit
+        self.__value = value
+
+    def __str__(self):
+        if self.__value == 11:
+            return "Jack of " + self.suit
+        elif self.__value == 12:
+            return "Queen of " + self.suit
+        elif self.__value == 13:
+            return "King of " + self.suit
+        elif self.__value == 14:
+            return "Ace of " + self.suit
+        else:
+            return str(self.__value) + " of " + self.suit
+
+    def get_value(self):
+        if self.__value <= 10:
+            return self.__value
+        elif self.__value <= 13:
+            return 10
+        else:
+            return 14
+
+
+class DeckOfCards:
+    def __init__(self):
+        self.deck = []
+        suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
+        for i in range(len(suits)):
+            for j in range(2, 15):
+                self.deck.append(Card(suits[i], j))
+
+    def print_deck(self):
+        for i in range(len(self.deck)):
+            print(self.deck[i])
+
+    def shuffle(self):
+        random.shuffle(self.deck)
+
+    def draw_card(self):
+        return self.deck.pop()
+
+
+class Dealer:
+    def __init__(self, name="Dealer"):
+        self.name = name
+        self.hand = []
+
+    def __str__(self):
+        str1 = self.name+": "
+        for card in self.hand:
+            str1 += str(card) + "; "
+        return str1
+
+
+class Player(Dealer):
+    def __init__(self, name, money):
+        self.name = name
+        self.hand = []
+        self.money = money
+
+    def __str__(self):
+        str1 = self.name + ": "
+        for card in self.hand:
+            str1 += str(card) + "; "
+        return str1
+
+
+def main():
+    deck = DeckOfCards()
+    dealer = Dealer()
+    players = []
+    players.append(Player("Alice", 100))
+    players.append(Player("Bob", 50))
+    deck.shuffle()
+    dealer.hand.append(deck.draw_card())
+    dealer.hand.append(deck.draw_card())
+    for i in range(len(players)):
+        players[i].hand.append(deck.draw_card())
+        players[i].hand.append(deck.draw_card())
+    dealerHand = 0
+    for i in range(len(dealer.hand)):
+        dealerHand += dealer.hand[i].get_value()
+
+    print(dealer)
+    for player in players:
+        print(player)
+
+    for i in range(len(players)):
+        playerHand = 0
+        for j in range(len(players[i].hand)):
+            playerHand += players[i].hand[i].get_value()
+        if dealerHand > playerHand:
+            players[i].money -= 5
+            print(players[i].name+" lost. "+players[i].name+" now has $" + 
+                    str(players[i].money))
+        else:
+            players[i].money += 5
+            print(players[i].name+" won! "+players[i].name+" now has $" + 
+                    str(players[i].money))
+
+
+if __name__=="__main__":
+    main()
